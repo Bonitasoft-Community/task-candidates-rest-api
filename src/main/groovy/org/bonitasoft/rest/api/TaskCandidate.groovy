@@ -9,6 +9,7 @@ import org.apache.http.HttpHeaders
 import org.bonitasoft.engine.bpm.process.impl.CatchErrorEventTiggerDefinitionBuilder
 import org.bonitasoft.engine.identity.User
 import org.bonitasoft.engine.identity.UserSearchDescriptor
+import org.bonitasoft.engine.search.Order
 import org.bonitasoft.engine.search.SearchOptionsBuilder
 import org.bonitasoft.web.extension.ResourceProvider
 import org.bonitasoft.web.extension.rest.RestApiResponse
@@ -22,17 +23,32 @@ import org.bonitasoft.web.extension.rest.RestApiController
 class TaskCandidate implements RestApiController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TaskCandidate.class)
+    
+    def static final USER_DESCRIPTORS = [
+        UserSearchDescriptor.ID,
+        UserSearchDescriptor.USER_NAME,
+        UserSearchDescriptor.LAST_NAME,
+        UserSearchDescriptor.FIRST_NAME,
+        UserSearchDescriptor.GROUP_ID,
+        UserSearchDescriptor.ROLE_ID,
+        UserSearchDescriptor.MANAGER_USER_ID,
+        UserSearchDescriptor.ENABLED,
+        UserSearchDescriptor.LAST_CONNECTION
+    ]
 
     @Override
     RestApiResponse doHandle(HttpServletRequest request, RestApiResponseBuilder responseBuilder, RestAPIContext context) {
 		try {
 			def requestParameters = parseRequestParameters(request)
 			def processAPI = context.apiClient.processAPI
-			def searchResult = processAPI.searchUsersWhoCanExecutePendingHumanTask(requestParameters.taskId, new SearchOptionsBuilder(requestParameters.p, requestParameters.c)
-				.filter(UserSearchDescriptor.ENABLED, true)
-				.done())
+            def searchOptionsBuilder = new SearchOptionsBuilder(requestParameters.p, requestParameters.c)
+                                            .filter(UserSearchDescriptor.ENABLED, true)
+            if(requestParameters.orderBy) {
+                searchOptionsBuilder.sort(requestParameters.orderBy, requestParameters.order ?: Order.ASC_NULLS_LAST)
+            }
+			def searchResult = processAPI.searchUsersWhoCanExecutePendingHumanTask(requestParameters.taskId, searchOptionsBuilder.done())
 			return buildPagedResponse(responseBuilder,
-				 new JsonBuilder(searchResult.result.collect { User user -> [(user.id):user.userName] }).toString(),
+				 new JsonBuilder(searchResult.result.collect { User user -> [id:user.id, username:user.userName] }).toString(),
 				requestParameters.p,
 				requestParameters.c, 
 				searchResult.count)
@@ -72,6 +88,20 @@ class TaskCandidate implements RestApiController {
 		}catch(NumberFormatException nbe) {
 			throw new IllegalArgumentException('The parameter taskId must be a long value')
 		}
+        def o = request.getParameter "o"
+        if (o) {
+            def orderParam = o.split(" ")
+            def orderBy = orderParam[0]
+            if(!USER_DESCRIPTORS.contains(orderBy)) {
+                throw new IllegalArgumentException("'$orderBy' is not a valid order descriptor")
+            }
+            def order = Order.ASC_NULLS_LAST
+            if(orderParam.length > 1) {
+                order = Order.valueOf(orderParam[1])
+            }
+            requestParameters.put('orderBy',orderBy)
+            requestParameters.put('order', order)
+        }
 		return requestParameters
 	}
 
