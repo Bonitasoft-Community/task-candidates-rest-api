@@ -122,7 +122,7 @@ class TaskCandidateTest extends Specification {
         httpRequest.getParameter('taskId') >> "1001"
         parameters.taskId == 1001L
     }
-    
+
     def return_a_bad_request_when_o_parameter_is_not_a_user_descriptor() {
         when: "Invoking the TaskCandidate API"
         def apiResponse = new TaskCandidate().doHandle(httpRequest, new RestApiResponseBuilder(), context)
@@ -131,9 +131,9 @@ class TaskCandidateTest extends Specification {
         httpRequest.getParameter('o') >> "birthDate"
         apiResponse.httpStatus == 400
     }
-    
+
     def should_validate_o_parameter_is_a_user_search_descriptor() {
-         when: "Parsing request parameters"
+        when: "Parsing request parameters"
         def parameters = new TaskCandidate().parseRequestParameters(httpRequest)
 
         then: "userName is the order descriptor"
@@ -141,7 +141,7 @@ class TaskCandidateTest extends Specification {
         parameters.orderBy == "userName"
         parameters.order == Order.DESC
     }
-    
+
 
     def should_return_users_who_can_execute_the_task() {
         when: "Invoking the TaskCandidate API"
@@ -149,11 +149,12 @@ class TaskCandidateTest extends Specification {
 
         then: "The lsit of candidates is returned"
         processAPI.searchUsersWhoCanExecutePendingHumanTask(1L, _) >> Stub(SearchResult){
-           it.count >> 2
-           it.result >> [
+            it.count >> 2
+            it.result >> [
                 Stub(User){
-                   it.id >> 1
-                   it.userName >> 'romain'
+                    it.id >> 1
+                    it.userName >> 'romain'
+                    it.lastConnection >> new Date()
                 },
                 Stub(User){
                     it.id >> 2
@@ -161,7 +162,12 @@ class TaskCandidateTest extends Specification {
                 }
             ]
         }
-        result.response == """[{"id":1,"username":"romain"},{"id":2,"username":"adrien"}]"""
+        def parsedResult = new JsonSlurper().parseText(result.response)
+        parsedResult.size() == 2
+        parsedResult[0].id == 1
+        parsedResult[0].userName == 'romain'
+        parsedResult[1].id == 2
+        parsedResult[1].userName == 'adrien'
         result.httpStatus == 200
     }
 
