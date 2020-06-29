@@ -34,6 +34,6 @@ Run `./mvnw`
 			"iconId: 123
 		}
 	]
-	```
-1.`o=userName ASC` can be used to sort the response array by userName, see [UserSearchDescriptor](https://documentation.bonitasoft.com/javadoc/api/7.10.5/org/bonitasoft/engine/identity/UserSearchDescriptor.html) for compatible sort descriptors.
+	```	
+1. `o=userName ASC` can be used to sort the response array by userName, see [UserSearchDescriptor](https://documentation.bonitasoft.com/javadoc/api/7.10.5/org/bonitasoft/engine/identity/UserSearchDescriptor.html) for compatible sort descriptors.
 1. `task_visualization` permission is used for this API
