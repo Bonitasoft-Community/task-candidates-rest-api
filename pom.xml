@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.bonitasoft.rest.api</groupId>
 	<artifactId>task-candidates-rest-api</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 
 	<name>Task Candidates REST API</name>
 	<description>REST API to get all the task candidates for a given task id</description>

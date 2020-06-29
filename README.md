@@ -2,7 +2,7 @@
 
 ![](https://github.com/Bonitasoft-Community/task-candidates-rest-api/workflows/Build/badge.svg)
 [![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=Bonitasoft-Community_task-candidates-rest-api&metric=alert_status)](https://sonarcloud.io/dashboard?id=Bonitasoft-Community_task-candidates-rest-api)
-[![GitHub version](https://badge.fury.io/gh/Bonitasoft-Community%2task-candidates-rest-api.svg)](https://badge.fury.io/gh/Bonitasoft-Community%2Ftask-candidates-rest-api)
+[![GitHub version](https://badge.fury.io/gh/Bonitasoft-Community%2Ftask-candidates-rest-api.svg)](https://badge.fury.io/gh/Bonitasoft-Community%2Ftask-candidates-rest-api)
 
 Get the list of users that can performed a given task
 
