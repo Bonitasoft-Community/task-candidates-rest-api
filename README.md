@@ -18,19 +18,19 @@ Run `./mvnw`
 ```json
 [
 	{
-	  "id" : 15,
-	  "userName": "helen.kelly",
-	  "lastName": "Kelly",
-      "firstName": "Helen",
-      "title": "Mrs.",
-      "jobTitle": "HR manager",
-      "lastConnection": "2020-06-29T08:54:23+0000",
-      "lastUpdate": "2020-01-02T13:54:23+0000",
-      "enabled": true,
-      "createdBy": -1,
-      "managerUserId": 21,
-      "creationDate": "2019-01-02T13:54:23+0000",
-      "iconId: 123
+		"id" : 15,
+		"userName": "helen.kelly",
+		"lastName": "Kelly",
+		"firstName": "Helen",
+		"title": "Mrs.",
+		"jobTitle": "HR manager",
+		"lastConnection": "2020-06-29T08:54:23+0000",
+		"lastUpdate": "2020-01-02T13:54:23+0000",
+		"enabled": true,
+		"createdBy": -1,
+		"managerUserId": 21,
+		"creationDate": "2019-01-02T13:54:23+0000",
+		"iconId: 123
 	}
 ]
 ```
