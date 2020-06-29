@@ -48,7 +48,21 @@ class TaskCandidate implements RestApiController {
             }
 			def searchResult = processAPI.searchUsersWhoCanExecutePendingHumanTask(requestParameters.taskId, searchOptionsBuilder.done())
 			return buildPagedResponse(responseBuilder,
-				 new JsonBuilder(searchResult.result.collect { User user -> [id:user.id, username:user.userName] }).toString(),
+				 new JsonBuilder(searchResult.result.collect { User user -> [
+                     id:user.id, 
+                     userName:user.userName,
+                     lastName:user.lastName,
+                     firstName:user.firstName,
+                     jobTitle:user.jobTitle,
+                     lastConnection:user.lastConnection,
+                     lastUpdate:user.lastUpdate,
+                     enabled:user.enabled,
+                     createdBy:user.createdBy,
+                     managerUserId:user.managerUserId,
+                     creationDate:user.creationDate,
+                     iconId:user.iconId,
+                     title:user.title
+                     ] }).toString(),
 				requestParameters.p,
 				requestParameters.c, 
 				searchResult.count)
